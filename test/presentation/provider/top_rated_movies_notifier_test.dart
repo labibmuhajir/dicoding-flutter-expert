@@ -1,80 +1,60 @@
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/common/failure.dart';
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/domain/entities/movie.dart';
+import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
 import 'package:ditonton/domain/usecases/get_top_rated_movies.dart';
-import 'package:ditonton/presentation/provider/top_rated_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/top_rated_tv_series_notifier.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'top_rated_movies_notifier_test.mocks.dart';
+import '../../dummy_data/dummy_objects.dart';
+import 'tv_series_list_notifier_test.mocks.dart';
 
 @GenerateMocks([GetTopRatedMovies])
 void main() {
-  late MockGetTopRatedMovies mockGetTopRatedMovies;
-  late TopRatedMoviesNotifier notifier;
-  late int listenerCallCount;
+  late MockGetTopRatedTvSeries mockGetTopRatedTvSeries;
+  late TopRatedTvSeriesNotifier notifier;
 
   setUp(() {
-    listenerCallCount = 0;
-    mockGetTopRatedMovies = MockGetTopRatedMovies();
-    notifier = TopRatedMoviesNotifier(getTopRatedMovies: mockGetTopRatedMovies)
-      ..addListener(() {
-        listenerCallCount++;
-      });
+    mockGetTopRatedTvSeries = MockGetTopRatedTvSeries();
+    notifier =
+        TopRatedTvSeriesNotifier(getTopRatedTvSeries: mockGetTopRatedTvSeries);
   });
-
-  final tMovie = Movie(
-    adult: false,
-    backdropPath: 'backdropPath',
-    genreIds: [1, 2, 3],
-    id: 1,
-    originalTitle: 'originalTitle',
-    overview: 'overview',
-    popularity: 1,
-    posterPath: 'posterPath',
-    releaseDate: 'releaseDate',
-    title: 'title',
-    video: false,
-    voteAverage: 1,
-    voteCount: 1,
-  );
-
-  final tMovieList = <Movie>[tMovie];
 
   test('should change state to loading when usecase is called', () async {
     // arrange
-    when(mockGetTopRatedMovies.execute())
-        .thenAnswer((_) async => Right(tMovieList));
+    when(mockGetTopRatedTvSeries.execute())
+        .thenAnswer((_) async => Right(tOnTheAirTvSeriesList));
     // act
-    notifier.fetchTopRatedMovies();
+    notifier.fetchTopRatedTvSeries();
     // assert
     expect(notifier.state, RequestState.Loading);
-    expect(listenerCallCount, 1);
   });
 
-  test('should change movies data when data is gotten successfully', () async {
+  test('should change tv series data when data is gotten successfully',
+      () async {
+    final data = tTopRatedSeriesList;
+    final expected =
+        tTopRatedSeriesList.map((e) => IdPosterTitleOverview.fromTvSeries(e));
     // arrange
-    when(mockGetTopRatedMovies.execute())
-        .thenAnswer((_) async => Right(tMovieList));
+    when(mockGetTopRatedTvSeries.execute())
+        .thenAnswer((_) async => Right(data));
     // act
-    await notifier.fetchTopRatedMovies();
+    await notifier.fetchTopRatedTvSeries();
     // assert
     expect(notifier.state, RequestState.Loaded);
-    expect(notifier.movies, tMovieList);
-    expect(listenerCallCount, 2);
+    expect(notifier.topRatedTvSeries, expected);
   });
 
   test('should return error when data is unsuccessful', () async {
     // arrange
-    when(mockGetTopRatedMovies.execute())
-        .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+    when(mockGetTopRatedTvSeries.execute())
+        .thenAnswer((_) async => Left(ServerFailure()));
     // act
-    await notifier.fetchTopRatedMovies();
+    await notifier.fetchTopRatedTvSeries();
     // assert
     expect(notifier.state, RequestState.Error);
     expect(notifier.message, 'Server Failure');
-    expect(listenerCallCount, 2);
   });
 }

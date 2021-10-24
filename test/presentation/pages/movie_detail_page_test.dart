@@ -1,4 +1,6 @@
 import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/domain/entities/id_and_data_type.dart';
+import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
@@ -39,7 +41,8 @@ void main() {
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(_makeTestableWidget(
+        MovieDetailPage(idAndDataType: IdAndDataType(1, DataType.Movie))));
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -55,7 +58,8 @@ void main() {
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(_makeTestableWidget(
+        MovieDetailPage(idAndDataType: IdAndDataType(1, DataType.Movie))));
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -72,7 +76,8 @@ void main() {
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(_makeTestableWidget(
+        MovieDetailPage(idAndDataType: IdAndDataType(1, DataType.Movie))));
 
     expect(find.byIcon(Icons.add), findsOneWidget);
 
@@ -95,7 +100,8 @@ void main() {
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(_makeTestableWidget(
+        MovieDetailPage(idAndDataType: IdAndDataType(1, DataType.Movie))));
 
     expect(find.byIcon(Icons.add), findsOneWidget);
 

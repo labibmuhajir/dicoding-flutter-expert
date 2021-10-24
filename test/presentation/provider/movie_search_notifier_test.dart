@@ -71,7 +71,7 @@ void main() {
     test('should return error when data is unsuccessful', () async {
       // arrange
       when(mockSearchMovies.execute(tQuery))
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => Left(ServerFailure()));
       // act
       await provider.fetchMovieSearch(tQuery);
       // assert

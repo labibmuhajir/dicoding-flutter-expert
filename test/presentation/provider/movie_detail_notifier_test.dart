@@ -146,7 +146,7 @@ void main() {
       when(mockGetMovieDetail.execute(tId))
           .thenAnswer((_) async => Right(testMovieDetail));
       when(mockGetMovieRecommendations.execute(tId))
-          .thenAnswer((_) async => Left(ServerFailure('Failed')));
+          .thenAnswer((_) async => Left(ServerFailure(message: 'Failed')));
       // act
       await provider.fetchMovieDetail(tId);
       // assert
@@ -222,7 +222,7 @@ void main() {
     test('should return error when data is unsuccessful', () async {
       // arrange
       when(mockGetMovieDetail.execute(tId))
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => Left(ServerFailure()));
       when(mockGetMovieRecommendations.execute(tId))
           .thenAnswer((_) async => Right(tMovies));
       // act

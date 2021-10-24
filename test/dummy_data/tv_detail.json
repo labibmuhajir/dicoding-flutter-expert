@@ -1,0 +1,124 @@
+{
+    "backdrop_path": "/brqTkMU88sOuEckWhhI7aMnYNma.jpg",
+    "created_by": [
+        {
+        "id": 7318,
+        "credit_id": "5257315e760ee3776a34fd4c",
+        "name": "Peter Kay",
+        "gender": 2,
+        "profile_path": "/1WWc41N02Efxk2zRJM0KKUGjhuS.jpg"
+        },
+        {
+        "id": 156142,
+        "credit_id": "5257315f760ee3776a34fd54",
+        "name": "Dave Spikey",
+        "gender": 2,
+        "profile_path": "/9cs11VZKTzRlMYmgdfHRuwvytFk.jpg"
+        }
+    ],
+    "episode_run_time": [
+        25
+    ],
+    "first_air_date": "2001-01-14",
+    "genres": [
+        {
+        "id": 35,
+        "name": "Comedy"
+        }
+    ],
+    "homepage": "http://www.channel4.com/programmes/peter-kays-phoenix-nights",
+    "id": 2331,
+    "in_production": false,
+    "languages": [
+        "en"
+    ],
+    "last_air_date": "2002-09-12",
+    "last_episode_to_air": {
+        "air_date": "2002-09-12",
+        "episode_number": 6,
+        "id": 170849,
+        "name": "Stars in Their Eyes",
+        "overview": "The Phoenix has risen and the punters are back. Brian isn't surprised when the brewery decides to come and celebrate his victory and throws a gala Stars in Their Eyes show.",
+        "production_code": "",
+        "season_number": 2,
+        "still_path": null,
+        "vote_average": 0,
+        "vote_count": 0
+    },
+    "name": "Phoenix Nights",
+    "next_episode_to_air": null,
+    "networks": [
+        {
+        "name": "Channel 4",
+        "id": 26,
+        "logo_path": "/zCUWm0Xb6AnjUbxzjL5OkzmHhd7.png",
+        "origin_country": "GB"
+        }
+    ],
+    "number_of_episodes": 12,
+    "number_of_seasons": 2,
+    "origin_country": [
+        "GB"
+    ],
+    "original_language": "en",
+    "original_name": "Phoenix Nights",
+    "overview": "The owner of The Phoenix Club is the wheelchair-bound Brian Potter, who has presided over two clubs in the past: the first (The Aquarius) flooded, the second (The Neptune) burned down. His ambition (with the help of Jerry St Clair) is to see The Phoenix Club become the most popular in Bolton and thus outdo his arch-nemesis, Den Perry, owner of rival club The Banana Grove.",
+    "popularity": 3.467,
+    "poster_path": "/jZcUdxCsd53o3Npp53wD9hfOZCh.jpg",
+    "production_companies": [
+        {
+        "id": 57765,
+        "logo_path": null,
+        "name": "Ovation Entertainment Limited",
+        "origin_country": ""
+        },
+        {
+        "id": 52368,
+        "logo_path": null,
+        "name": "Goodnight Vienna Productions",
+        "origin_country": ""
+        }
+    ],
+    "production_countries": [],
+    "seasons": [
+        {
+        "air_date": null,
+        "episode_count": 12,
+        "id": 7285,
+        "name": "Specials",
+        "overview": "",
+        "poster_path": null,
+        "season_number": 0
+        },
+        {
+        "air_date": "2001-01-14",
+        "episode_count": 6,
+        "id": 7283,
+        "name": "Season 1",
+        "overview": "",
+        "poster_path": "/qIZ0IQhX2cXTwrSVa55ZRRvWMbE.jpg",
+        "season_number": 1
+        },
+        {
+        "air_date": "2002-08-08",
+        "episode_count": 6,
+        "id": 7284,
+        "name": "Season 2",
+        "overview": "",
+        "poster_path": "/qUysx7L1rjlrLpyD9CHao0DqlSb.jpg",
+        "season_number": 2
+        }
+    ],
+    "spoken_languages": [
+        {
+        "english_name": "English",
+        "iso_639_1": "en",
+        "name": "English"
+        }
+    ],
+    "status": "Ended",
+    "tagline": "",
+    "type": "Scripted",
+    "vote_average": 8,
+    "vote_count": 27
+}

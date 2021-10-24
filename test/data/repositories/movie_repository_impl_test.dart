@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/data/models/genre_model.dart';
 import 'package:ditonton/data/models/movie_detail_model.dart';
 import 'package:ditonton/data/models/movie_model.dart';
@@ -91,7 +92,7 @@ void main() {
       final result = await repository.getNowPlayingMovies();
       // assert
       verify(mockRemoteDataSource.getNowPlayingMovies());
-      expect(result, equals(Left(ServerFailure(''))));
+      expect(result, equals(Left(ServerFailure())));
     });
 
     test(
@@ -99,13 +100,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getNowPlayingMovies())
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(SocketException(connectionErrorMessage));
       // act
       final result = await repository.getNowPlayingMovies();
       // assert
       verify(mockRemoteDataSource.getNowPlayingMovies());
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
+      expect(result, equals(Left(ConnectionFailure())));
     });
   });
 
@@ -132,7 +132,7 @@ void main() {
       // act
       final result = await repository.getPopularMovies();
       // assert
-      expect(result, Left(ServerFailure('')));
+      expect(result, Left(ServerFailure()));
     });
 
     test(
@@ -140,12 +140,11 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getPopularMovies())
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(SocketException(connectionErrorMessage));
       // act
       final result = await repository.getPopularMovies();
       // assert
-      expect(
-          result, Left(ConnectionFailure('Failed to connect to the network')));
+      expect(result, Left(ConnectionFailure()));
     });
   });
 
@@ -171,7 +170,7 @@ void main() {
       // act
       final result = await repository.getTopRatedMovies();
       // assert
-      expect(result, Left(ServerFailure('')));
+      expect(result, Left(ServerFailure()));
     });
 
     test(
@@ -179,12 +178,11 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getTopRatedMovies())
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(SocketException(connectionErrorMessage));
       // act
       final result = await repository.getTopRatedMovies();
       // assert
-      expect(
-          result, Left(ConnectionFailure('Failed to connect to the network')));
+      expect(result, Left(ConnectionFailure()));
     });
   });
 
@@ -237,7 +235,7 @@ void main() {
       final result = await repository.getMovieDetail(tId);
       // assert
       verify(mockRemoteDataSource.getMovieDetail(tId));
-      expect(result, equals(Left(ServerFailure(''))));
+      expect(result, equals(Left(ServerFailure())));
     });
 
     test(
@@ -245,13 +243,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getMovieDetail(tId))
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(SocketException(connectionErrorMessage));
       // act
       final result = await repository.getMovieDetail(tId);
       // assert
       verify(mockRemoteDataSource.getMovieDetail(tId));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
+      expect(result, equals(Left(ConnectionFailure())));
     });
   });
 
@@ -283,7 +280,7 @@ void main() {
       final result = await repository.getMovieRecommendations(tId);
       // assertbuild runner
       verify(mockRemoteDataSource.getMovieRecommendations(tId));
-      expect(result, equals(Left(ServerFailure(''))));
+      expect(result, equals(Left(ServerFailure())));
     });
 
     test(
@@ -291,13 +288,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getMovieRecommendations(tId))
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(SocketException(connectionErrorMessage));
       // act
       final result = await repository.getMovieRecommendations(tId);
       // assert
       verify(mockRemoteDataSource.getMovieRecommendations(tId));
-      expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
+      expect(result, equals(Left(ConnectionFailure())));
     });
   });
 
@@ -325,7 +321,7 @@ void main() {
       // act
       final result = await repository.searchMovies(tQuery);
       // assert
-      expect(result, Left(ServerFailure('')));
+      expect(result, Left(ServerFailure()));
     });
 
     test(
@@ -333,12 +329,11 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.searchMovies(tQuery))
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(SocketException(connectionErrorMessage));
       // act
       final result = await repository.searchMovies(tQuery);
       // assert
-      expect(
-          result, Left(ConnectionFailure('Failed to connect to the network')));
+      expect(result, Left(ConnectionFailure()));
     });
   });
 

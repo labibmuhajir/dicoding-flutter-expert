@@ -1,13 +1,18 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
+import 'package:ditonton/domain/entities/id_and_data_type.dart';
+import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
+import 'package:ditonton/presentation/widgets/ditonton_image.dart';
 import 'package:flutter/material.dart';
 
-class MovieCard extends StatelessWidget {
-  final Movie movie;
+class IdPosterTitleOverviewCard extends StatelessWidget {
+  final IdPosterTitleOverview data;
 
-  MovieCard(this.movie);
+  IdPosterTitleOverviewCard(this.data);
+
+  factory IdPosterTitleOverviewCard.fromMovie(Movie movie) =>
+      IdPosterTitleOverviewCard(IdPosterTitleOverview.fromMovie(movie));
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,7 @@ class MovieCard extends StatelessWidget {
           Navigator.pushNamed(
             context,
             MovieDetailPage.ROUTE_NAME,
-            arguments: movie.id,
+            arguments: IdAndDataType.from(data),
           );
         },
         child: Stack(
@@ -35,14 +40,14 @@ class MovieCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      movie.title ?? '-',
+                      data.title ?? '-',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: kHeading6,
                     ),
                     SizedBox(height: 16),
                     Text(
-                      movie.overview ?? '-',
+                      data.overview ?? '-',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -56,13 +61,10 @@ class MovieCard extends StatelessWidget {
                 bottom: 16,
               ),
               child: ClipRRect(
-                child: CachedNetworkImage(
-                  imageUrl: '$BASE_IMAGE_URL${movie.posterPath}',
+                child: DitontonImage(
+                  data.poster,
                   width: 80,
-                  placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  height: 120,
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
