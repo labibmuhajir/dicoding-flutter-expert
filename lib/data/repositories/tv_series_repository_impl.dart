@@ -83,4 +83,19 @@ class TvSeriesRepositoryImpl extends TvSeriesRepository {
       return Left(UnknownFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<TvSeriesModel>>> getTvSeriesRecommendation(
+      int id) async {
+    try {
+      final result = await _dataSource.getTvSeriesRecommendation(id);
+      return Right(result);
+    } on ServerException {
+      return Left(ServerFailure());
+    } on SocketException {
+      return Left(ConnectionFailure());
+    } catch (e) {
+      return Left(UnknownFailure());
+    }
+  }
 }

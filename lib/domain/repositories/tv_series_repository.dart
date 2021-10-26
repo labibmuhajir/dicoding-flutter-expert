@@ -9,4 +9,6 @@ abstract class TvSeriesRepository {
   Future<Either<Failure, List<TvSeriesModel>>> getTopRatedTvSeries();
   Future<Either<Failure, List<TvSeriesModel>>> searchTvSeries(String keyword);
   Future<Either<Failure, TvDetailModel>> getTvSeries(int id);
+  Future<Either<Failure, List<TvSeriesModel>>> getTvSeriesRecommendation(
+      int id);
 }

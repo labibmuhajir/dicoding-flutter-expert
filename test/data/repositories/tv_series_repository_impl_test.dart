@@ -305,4 +305,49 @@ void main() {
       expect(result, equals(Left(ConnectionFailure())));
     });
   });
+
+  group('Get Movie Recommendations', () {
+    final tId = tTvDetail.id;
+
+    test('should return data (tv series list) when the call is successful',
+        () async {
+      // arrange
+      final response = tTvRecommendationList;
+      when(dataSource.getTvSeriesRecommendation(tId))
+          .thenAnswer((_) async => response);
+      // act
+      final result = await repository.getTvSeriesRecommendation(tId);
+      // assert
+      verify(dataSource.getTvSeriesRecommendation(tId));
+      /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
+      final resultList = result.getOrElse(() => []);
+      expect(resultList, equals(response));
+    });
+
+    test(
+        'should return server failure when call to remote data source is unsuccessful',
+        () async {
+      // arrange
+      when(dataSource.getTvSeriesRecommendation(tId))
+          .thenThrow(ServerException());
+      // act
+      final result = await repository.getTvSeriesRecommendation(tId);
+      // assertbuild runner
+      verify(dataSource.getTvSeriesRecommendation(tId));
+      expect(result, equals(Left(ServerFailure())));
+    });
+
+    test(
+        'should return connection failure when the device is not connected to the internet',
+        () async {
+      // arrange
+      when(dataSource.getTvSeriesRecommendation(tId))
+          .thenThrow(SocketException(connectionErrorMessage));
+      // act
+      final result = await repository.getTvSeriesRecommendation(tId);
+      // assert
+      verify(dataSource.getTvSeriesRecommendation(tId));
+      expect(result, equals(Left(ConnectionFailure())));
+    });
+  });
 }

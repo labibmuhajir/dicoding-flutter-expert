@@ -137,3 +137,19 @@ final tTvDetail = TvDetailModel(
         "The Phoenix has risen and the punters are back. Brian isn't surprised when the brewery decides to come and celebrate his victory and throws a gala Stars in Their Eyes show.",
     numberOfEpisodes: 12,
     numberOfSeasons: 2);
+
+final tTvRecommendation = TvSeriesModel(
+    firstAirDate: "1981-09-08",
+    genreIds: [35],
+    id: 72,
+    name: "Only Fools and Horses",
+    originCountry: ["GB"],
+    originalLanguage: "en",
+    originalName: "Only Fools and Horses",
+    overview:
+        "The misadventures of two wheeler dealer brothers Del Boy and Rodney Trotter of “Trotters Independent Traders PLC” who scrape their living by selling dodgy goods believing that next year they will be millionaires.",
+    popularity: 13.616,
+    voteAverage: 7.9,
+    voteCount: 179);
+
+final tTvRecommendationList = [tTvRecommendation];

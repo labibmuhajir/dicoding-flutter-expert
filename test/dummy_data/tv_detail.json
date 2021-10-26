@@ -42,7 +42,7 @@
         "production_code": "",
         "season_number": 2,
         "still_path": null,
-        "vote_average": 0,
+        "vote_average": 0.0,
         "vote_count": 0
     },
     "name": "Phoenix Nights",
@@ -119,6 +119,6 @@
     "status": "Ended",
     "tagline": "",
     "type": "Scripted",
-    "vote_average": 8,
+    "vote_average": 8.0,
     "vote_count": 27
 }

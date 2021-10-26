@@ -287,4 +287,39 @@ void main() {
       expect(() => call, throwsA(isA<ServerException>()));
     });
   });
+
+  group('get tv series recommendations', () {
+    final tId = 2331;
+    final data = readJson('dummy_data/tv_recommendations.json');
+    final tTvRecommendation =
+        TvSeriesResponse.fromJson(json.decode(data)).serialTvList;
+
+    final url = TvRemoteDataSourceImpl.generateUrlTvRecommendation(tId);
+    final uri = Uri.parse(url);
+
+    test('should return list of Movie Model when the response code is 200',
+        () async {
+      // arrange
+      final response = data;
+      final statusCode = 200;
+      arrangeApiCall(uri, response, statusCode);
+      // act
+      final result = await dataSource.getTvSeriesRecommendation(tId);
+      // assert
+      expect(result, equals(tTvRecommendation));
+    });
+
+    test('should throw Server Exception when the response code is 404 or other',
+        () async {
+      // arrange
+      final response = 'Not Found';
+      final statusCode = 404;
+      arrangeApiCall(uri, response, statusCode);
+
+      // act
+      final call = dataSource.getTvSeriesRecommendation(tId);
+      // assert
+      expect(() => call, throwsA(isA<ServerException>()));
+    });
+  });
 }

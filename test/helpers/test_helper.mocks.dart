@@ -261,6 +261,11 @@ class MockTvRemoteDataSource extends _i1.Mock
           Invocation.method(#getTvSeries, [id]),
           returnValue: Future<_i4.TvDetailModel>.value(_FakeTvDetailModel()))
       as _i8.Future<_i4.TvDetailModel>);
+  @override
+  _i8.Future<List<_i19.TvSeriesModel>> getTvSeriesRecommendation(int? id) =>
+      (super.noSuchMethod(Invocation.method(#getTvSeriesRecommendation, [id]),
+          returnValue: Future<List<_i19.TvSeriesModel>>.value(
+              <_i19.TvSeriesModel>[])) as _i8.Future<List<_i19.TvSeriesModel>>);
 }
 
 /// A class which mocks [TvSeriesRepository].
@@ -310,6 +315,14 @@ class MockTvSeriesRepository extends _i1.Mock
           returnValue: Future<_i2.Either<_i9.Failure, _i4.TvDetailModel>>.value(
               _FakeEither<_i9.Failure, _i4.TvDetailModel>())) as _i8
           .Future<_i2.Either<_i9.Failure, _i4.TvDetailModel>>);
+  @override
+  _i8.Future<_i2.Either<_i9.Failure, List<_i19.TvSeriesModel>>>
+      getTvSeriesRecommendation(int? id) => (super.noSuchMethod(
+          Invocation.method(#getTvSeriesRecommendation, [id]),
+          returnValue:
+              Future<_i2.Either<_i9.Failure, List<_i19.TvSeriesModel>>>.value(
+                  _FakeEither<_i9.Failure, List<_i19.TvSeriesModel>>())) as _i8
+          .Future<_i2.Either<_i9.Failure, List<_i19.TvSeriesModel>>>);
 }
 
 /// A class which mocks [Client].

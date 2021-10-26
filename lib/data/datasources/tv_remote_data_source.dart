@@ -13,6 +13,7 @@ abstract class TvRemoteDataSource {
   Future<List<TvSeriesModel>> getTopRatedTvSeries();
   Future<List<TvSeriesModel>> searchTvSeries(String keyword);
   Future<TvDetailModel> getTvSeries(int id);
+  Future<List<TvSeriesModel>> getTvSeriesRecommendation(int id);
 }
 
 class TvRemoteDataSourceImpl implements TvRemoteDataSource {
@@ -22,6 +23,8 @@ class TvRemoteDataSourceImpl implements TvRemoteDataSource {
   static String generateUrlTvSeries(String query) =>
       '$BASE_URL/search/tv?$API_KEY&query=$query';
   static String generateUrlTvDetail(int id) => '$BASE_URL/tv/$id?$API_KEY';
+  static String generateUrlTvRecommendation(int id) =>
+      '$BASE_URL/tv/$id/recommendations';
 
   final http.Client client;
 
@@ -92,6 +95,20 @@ class TvRemoteDataSourceImpl implements TvRemoteDataSource {
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body);
       return TvDetailModel.fromJson(decoded);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<TvSeriesModel>> getTvSeriesRecommendation(int id) async {
+    final url = generateUrlTvRecommendation(id);
+    final uri = Uri.parse(url);
+    final response = await client.get(uri);
+
+    if (response.statusCode == 200) {
+      final decoded = jsonDecode(response.body);
+      return TvSeriesResponse.fromJson(decoded).serialTvList;
     } else {
       throw ServerException();
     }
