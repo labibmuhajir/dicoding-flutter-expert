@@ -3,20 +3,20 @@ import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/content_data.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/id_and_data_type.dart';
-import 'package:ditonton/domain/entities/movie.dart';
+import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_detail_notifier.dart';
 import 'package:ditonton/presentation/widgets/ditonton_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 class DetailContent extends StatelessWidget {
-  final ContentData movie;
-  final List<Movie> recommendations;
+  final ContentData contentData;
   final bool isAddedWatchlist;
 
-  DetailContent(this.movie, this.recommendations, this.isAddedWatchlist);
+  DetailContent(this.contentData, this.isAddedWatchlist);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class DetailContent extends StatelessWidget {
     return Stack(
       children: [
         DitontonImage(
-          movie.posterPath,
+          contentData.posterPath,
           width: screenWidth,
         ),
         Container(
@@ -51,7 +51,7 @@ class DetailContent extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              movie.title,
+                              contentData.title,
                               style: kHeading5,
                             ),
                             ElevatedButton(
@@ -102,15 +102,16 @@ class DetailContent extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              _showGenres(movie.genres),
+                              _showGenres(contentData.genres),
                             ),
                             Text(
-                              _showDuration(int.fromEnvironment(movie.runtime)),
+                              _showDuration(
+                                  int.fromEnvironment(contentData.runtime)),
                             ),
                             Row(
                               children: [
                                 RatingBarIndicator(
-                                  rating: movie.voteAverage / 2,
+                                  rating: contentData.voteAverage / 2,
                                   itemCount: 5,
                                   itemBuilder: (context, index) => Icon(
                                     Icons.star,
@@ -118,7 +119,7 @@ class DetailContent extends StatelessWidget {
                                   ),
                                   itemSize: 24,
                                 ),
-                                Text('${movie.voteAverage}')
+                                Text('${contentData.voteAverage}')
                               ],
                             ),
                             SizedBox(height: 16),
@@ -127,61 +128,17 @@ class DetailContent extends StatelessWidget {
                               style: kHeading6,
                             ),
                             Text(
-                              movie.overview,
+                              contentData.overview,
                             ),
                             SizedBox(height: 16),
                             Text(
                               'Recommendations',
                               style: kHeading6,
                             ),
-                            Consumer<MovieDetailNotifier>(
-                              builder: (context, data, child) {
-                                if (data.recommendationState ==
-                                    RequestState.Loading) {
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                } else if (data.recommendationState ==
-                                    RequestState.Error) {
-                                  return Text(data.message);
-                                } else if (data.recommendationState ==
-                                    RequestState.Loaded) {
-                                  return Container(
-                                    height: 150,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index) {
-                                        final movie = recommendations[index];
-                                        return Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.pushReplacementNamed(
-                                                context,
-                                                MovieDetailPage.ROUTE_NAME,
-                                                arguments:
-                                                    IdAndDataType.fromMovie(
-                                                        movie),
-                                              );
-                                            },
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(8),
-                                              ),
-                                              child: DitontonImage(
-                                                  movie.posterPath ?? ""),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      itemCount: recommendations.length,
-                                    ),
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              },
-                            ),
+                            if (contentData.dataType == DataType.TvSeries)
+                              _buildTvDetail()
+                            else
+                              _buildMovie()
                           ],
                         ),
                       ),
@@ -217,6 +174,97 @@ class DetailContent extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+
+  Widget _buildMovie() {
+    return Consumer<MovieDetailNotifier>(
+      builder: (context, data, child) {
+        if (data.recommendationState == RequestState.Loading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (data.recommendationState == RequestState.Error) {
+          return Text(data.message);
+        } else if (data.recommendationState == RequestState.Loaded) {
+          return Container(
+            height: 150,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                final movies = data.movieRecommendations[index];
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        MovieDetailPage.ROUTE_NAME,
+                        arguments: IdAndDataType.fromMovie(movies),
+                      );
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8),
+                      ),
+                      child: DitontonImage(movies.posterPath ?? ""),
+                    ),
+                  ),
+                );
+              },
+              itemCount: data.movieRecommendations.length,
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  Widget _buildTvDetail() {
+    return Consumer<TvDetailNotifier>(
+      builder: (context, data, child) {
+        if (data.recommendationState == RequestState.Loading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (data.recommendationState == RequestState.Error) {
+          return Text(data.message);
+        } else if (data.recommendationState == RequestState.Loaded) {
+          return Container(
+            height: 150,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                final idPosterDataType = data.recommendations[index];
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        MovieDetailPage.ROUTE_NAME,
+                        arguments: IdAndDataType.fromIdPosterDataType(
+                            idPosterDataType),
+                      );
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8),
+                      ),
+                      child: DitontonImage(idPosterDataType.poster ?? ""),
+                    ),
+                  ),
+                );
+              },
+              itemCount: data.recommendations.length,
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 

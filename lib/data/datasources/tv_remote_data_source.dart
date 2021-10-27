@@ -24,7 +24,7 @@ class TvRemoteDataSourceImpl implements TvRemoteDataSource {
       '$BASE_URL/search/tv?$API_KEY&query=$query';
   static String generateUrlTvDetail(int id) => '$BASE_URL/tv/$id?$API_KEY';
   static String generateUrlTvRecommendation(int id) =>
-      '$BASE_URL/tv/$id/recommendations';
+      '$BASE_URL/tv/$id/recommendations?$API_KEY';
 
   final http.Client client;
 

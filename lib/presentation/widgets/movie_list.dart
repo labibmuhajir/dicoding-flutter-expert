@@ -23,7 +23,7 @@ class MovieList extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          final IdPosterDataType = idAndPoster[index];
+          final idPoster = idAndPoster[index];
           return Container(
             width: 140,
             padding: const EdgeInsets.all(8),
@@ -32,11 +32,10 @@ class MovieList extends StatelessWidget {
                   Navigator.pushNamed(
                     context,
                     MovieDetailPage.ROUTE_NAME,
-                    arguments:
-                        IdAndDataType.fromIdPosterDataType(IdPosterDataType),
+                    arguments: IdAndDataType.fromIdPosterDataType(idPoster),
                   );
                 },
-                child: DitontonImage(IdPosterDataType.poster)),
+                child: DitontonImage(idPoster.poster)),
           );
         },
         itemCount: idAndPoster.length,

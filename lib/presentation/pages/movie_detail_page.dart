@@ -59,7 +59,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           return SafeArea(
             child: DetailContent(
               ContentData.fromMovie(movie),
-              provider.movieRecommendations,
               provider.isAddedToWatchlist,
             ),
           );
@@ -82,7 +81,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           return SafeArea(
             child: DetailContent(
               movie,
-              [],
               false,
             ),
           );
