@@ -4,6 +4,7 @@ import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/provider/tv_detail_notifier.dart';
+import 'package:ditonton/presentation/provider/watchlist_notifier.dart';
 import 'package:ditonton/presentation/widgets/detail_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,8 +28,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       Future.microtask(() {
         Provider.of<MovieDetailNotifier>(context, listen: false)
             .fetchMovieDetail(widget.idAndDataType.id);
-        Provider.of<MovieDetailNotifier>(context, listen: false)
-            .loadWatchlistStatus(widget.idAndDataType.id);
       });
     } else if (widget.idAndDataType.dataType == DataType.TvSeries) {
       Future.microtask(() {
@@ -36,6 +35,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             .fetchTvDetail(widget.idAndDataType.id);
       });
     }
+
+    Provider.of<WatchlistNotifier>(context, listen: false)
+        .loadWatchlistStatus(widget.idAndDataType);
   }
 
   @override
@@ -59,7 +61,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           return SafeArea(
             child: DetailContent(
               ContentData.fromMovie(movie),
-              provider.isAddedToWatchlist,
             ),
           );
         } else {
@@ -81,7 +82,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           return SafeArea(
             child: DetailContent(
               movie,
-              false,
             ),
           );
         } else {

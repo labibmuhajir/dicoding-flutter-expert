@@ -33,34 +33,36 @@ class DatabaseHelper {
   void _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE  $_tblWatchlist (
-        id INTEGER PRIMARY KEY,
+        id INTEGER,
         title TEXT,
         overview TEXT,
-        posterPath TEXT
+        posterPath TEXT,
+        dataType INTEGER,
+        PRIMARY KEY (id, dataType)
       );
     ''');
   }
 
-  Future<int> insertWatchlist(MovieTable movie) async {
+  Future<int> insertWatchlist(WatchlistTable movie) async {
     final db = await database;
     return await db!.insert(_tblWatchlist, movie.toJson());
   }
 
-  Future<int> removeWatchlist(MovieTable movie) async {
+  Future<int> removeWatchlist(int id, int dataType) async {
     final db = await database;
     return await db!.delete(
       _tblWatchlist,
-      where: 'id = ?',
-      whereArgs: [movie.id],
+      where: 'id = ? and dataType = ?',
+      whereArgs: [id, dataType],
     );
   }
 
-  Future<Map<String, dynamic>?> getMovieById(int id) async {
+  Future<Map<String, dynamic>?> getMovieById(int id, int dataType) async {
     final db = await database;
     final results = await db!.query(
       _tblWatchlist,
-      where: 'id = ?',
-      whereArgs: [id],
+      where: 'id = ? and dataType = ?',
+      whereArgs: [id, dataType],
     );
 
     if (results.isNotEmpty) {

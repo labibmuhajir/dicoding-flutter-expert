@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 @GenerateMocks([
   MovieRepository,
   MovieRemoteDataSource,
-  MovieLocalDataSource,
+  WatchlistLocalDataSource,
   DatabaseHelper,
   TvRemoteDataSource,
   TvSeriesRepository
