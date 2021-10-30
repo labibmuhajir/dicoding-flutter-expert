@@ -207,7 +207,7 @@ class DetailContent extends StatelessWidget {
                       borderRadius: BorderRadius.all(
                         Radius.circular(8),
                       ),
-                      child: DitontonImage(idPosterDataType.poster ?? ""),
+                      child: DitontonImage(idPosterDataType.poster),
                     ),
                   ),
                 );

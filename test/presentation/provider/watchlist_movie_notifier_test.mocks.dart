@@ -2,12 +2,18 @@
 // in ditonton/test/presentation/provider/watchlist_movie_notifier_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i4;
+import 'dart:async' as _i5;
 
-import 'package:dartz/dartz.dart' as _i2;
-import 'package:ditonton/common/failure.dart' as _i5;
-import 'package:ditonton/domain/entities/id_poster_title_overview.dart' as _i6;
-import 'package:ditonton/domain/usecases/get_watchlist_movies.dart' as _i3;
+import 'package:dartz/dartz.dart' as _i3;
+import 'package:ditonton/common/failure.dart' as _i6;
+import 'package:ditonton/domain/entities/content_data.dart' as _i12;
+import 'package:ditonton/domain/entities/id_and_data_type.dart' as _i10;
+import 'package:ditonton/domain/entities/id_poster_title_overview.dart' as _i7;
+import 'package:ditonton/domain/repositories/watch_list_repository.dart' as _i2;
+import 'package:ditonton/domain/usecases/get_watchlist_movies.dart' as _i4;
+import 'package:ditonton/domain/usecases/get_watchlist_status.dart' as _i8;
+import 'package:ditonton/domain/usecases/remove_watchlist.dart' as _i9;
+import 'package:ditonton/domain/usecases/save_watchlist.dart' as _i11;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -16,23 +22,91 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeEither<L, R> extends _i1.Fake implements _i2.Either<L, R> {}
+class _FakeWatchlistRepository extends _i1.Fake
+    implements _i2.WatchlistRepository {}
+
+class _FakeEither<L, R> extends _i1.Fake implements _i3.Either<L, R> {}
 
 /// A class which mocks [GetWatchlist].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetWatchlist extends _i1.Mock implements _i3.GetWatchlist {
+class MockGetWatchlist extends _i1.Mock implements _i4.GetWatchlist {
   MockGetWatchlist() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<
-      _i2.Either<_i5.Failure,
-          List<_i6.IdPosterTitleOverview>>> execute() => (super.noSuchMethod(
+  _i2.WatchlistRepository get repository =>
+      (super.noSuchMethod(Invocation.getter(#repository),
+          returnValue: _FakeWatchlistRepository()) as _i2.WatchlistRepository);
+  @override
+  _i5.Future<
+      _i3.Either<_i6.Failure,
+          List<_i7.IdPosterTitleOverview>>> execute() => (super.noSuchMethod(
       Invocation.method(#execute, []),
       returnValue:
-          Future<_i2.Either<_i5.Failure, List<_i6.IdPosterTitleOverview>>>.value(
-              _FakeEither<_i5.Failure, List<_i6.IdPosterTitleOverview>>())) as _i4
-      .Future<_i2.Either<_i5.Failure, List<_i6.IdPosterTitleOverview>>>);
+          Future<_i3.Either<_i6.Failure, List<_i7.IdPosterTitleOverview>>>.value(
+              _FakeEither<_i6.Failure, List<_i7.IdPosterTitleOverview>>())) as _i5
+      .Future<_i3.Either<_i6.Failure, List<_i7.IdPosterTitleOverview>>>);
+}
+
+/// A class which mocks [GetWatchListStatus].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetWatchListStatus extends _i1.Mock
+    implements _i8.GetWatchListStatus {
+  MockGetWatchListStatus() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.WatchlistRepository get repository =>
+      (super.noSuchMethod(Invocation.getter(#repository),
+          returnValue: _FakeWatchlistRepository()) as _i2.WatchlistRepository);
+  @override
+  _i5.Future<bool> execute(int? id, int? dataType) =>
+      (super.noSuchMethod(Invocation.method(#execute, [id, dataType]),
+          returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
+}
+
+/// A class which mocks [RemoveWatchlist].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockRemoveWatchlist extends _i1.Mock implements _i9.RemoveWatchlist {
+  MockRemoveWatchlist() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.WatchlistRepository get repository =>
+      (super.noSuchMethod(Invocation.getter(#repository),
+          returnValue: _FakeWatchlistRepository()) as _i2.WatchlistRepository);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, String>> execute(
+          _i10.IdAndDataType? idAndDataType) =>
+      (super.noSuchMethod(Invocation.method(#execute, [idAndDataType]),
+              returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
+                  _FakeEither<_i6.Failure, String>()))
+          as _i5.Future<_i3.Either<_i6.Failure, String>>);
+}
+
+/// A class which mocks [SaveWatchlist].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSaveWatchlist extends _i1.Mock implements _i11.SaveWatchlist {
+  MockSaveWatchlist() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.WatchlistRepository get repository =>
+      (super.noSuchMethod(Invocation.getter(#repository),
+          returnValue: _FakeWatchlistRepository()) as _i2.WatchlistRepository);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, String>> execute(
+          _i12.ContentData? contentData) =>
+      (super.noSuchMethod(Invocation.method(#execute, [contentData]),
+              returnValue: Future<_i3.Either<_i6.Failure, String>>.value(
+                  _FakeEither<_i6.Failure, String>()))
+          as _i5.Future<_i3.Either<_i6.Failure, String>>);
 }

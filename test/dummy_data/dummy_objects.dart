@@ -60,6 +60,7 @@ final testMovieMap = {
   'overview': 'overview',
   'posterPath': 'posterPath',
   'title': 'title',
+  'dataType': DataType.Movie.index
 };
 
 final tPopularTvSeries = TvSeriesModel(

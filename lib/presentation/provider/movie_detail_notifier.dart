@@ -60,7 +60,4 @@ class MovieDetailNotifier extends ChangeNotifier {
       },
     );
   }
-
-  String _watchlistMessage = '';
-  String get watchlistMessage => _watchlistMessage;
 }

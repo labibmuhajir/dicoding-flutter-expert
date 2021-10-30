@@ -21,11 +21,13 @@ void main() {
     repository = WatchlistRepositoryImpl(localDataSource);
   });
 
-  group('save watchlist', () {
-    final source = testMovieDetail;
-    final data = ContentData.fromMovie(source);
-    final table = testMovieTable;
+  final source = testMovieDetail;
+  final data = ContentData.fromMovie(source);
+  final table = testMovieTable;
+  final id = data.id;
+  final dataType = data.dataType;
 
+  group('save watchlist', () {
     test('should return success message when saving successful', () async {
       // arrange
       when(localDataSource.insertWatchlist(table))
@@ -48,26 +50,22 @@ void main() {
   });
 
   group('remove watchlist', () {
-    final source = testMovieDetail;
-    final data = ContentData.fromMovie(source);
-    final table = testMovieTable;
-
     test('should return success message when remove successful', () async {
       // arrange
-      when(localDataSource.removeWatchlist(testMovieTable))
+      when(localDataSource.removeWatchlist(id, dataType.index))
           .thenAnswer((_) async => 'Removed from watchlist');
       // act
-      final result = await repository.removeWatchlist(data);
+      final result = await repository.removeWatchlist(id, dataType.index);
       // assert
       expect(result, Right('Removed from watchlist'));
     });
 
     test('should return DatabaseFailure when remove unsuccessful', () async {
       // arrange
-      when(localDataSource.removeWatchlist(testMovieTable))
+      when(localDataSource.removeWatchlist(id, dataType.index))
           .thenThrow(DatabaseException('Failed to remove watchlist'));
       // act
-      final result = await repository.removeWatchlist(data);
+      final result = await repository.removeWatchlist(id, dataType.index);
       // assert
       expect(result, Left(DatabaseFailure('Failed to remove watchlist')));
     });
@@ -76,10 +74,10 @@ void main() {
   group('get watchlist status', () {
     test('should return watch status whether data is found', () async {
       // arrange
-      final tId = 1;
-      when(localDataSource.getMovieById(tId)).thenAnswer((_) async => null);
+      when(localDataSource.getMovieById(id, dataType.index))
+          .thenAnswer((_) async => null);
       // act
-      final result = await repository.isAddedToWatchlist(tId);
+      final result = await repository.isAddedToWatchlist(id, dataType.index);
       // assert
       expect(result, false);
     });
