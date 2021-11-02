@@ -8,15 +8,15 @@ import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_detail_notifier.dart';
 import 'package:ditonton/presentation/widgets/ditonton_image.dart';
+import 'package:ditonton/presentation/widgets/watchlist_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 class DetailContent extends StatelessWidget {
   final ContentData contentData;
-  final bool isAddedWatchlist;
 
-  DetailContent(this.contentData, this.isAddedWatchlist);
+  DetailContent(this.contentData);
 
   @override
   Widget build(BuildContext context) {
@@ -54,53 +54,7 @@ class DetailContent extends StatelessWidget {
                               contentData.title,
                               style: kHeading5,
                             ),
-                            ElevatedButton(
-                              onPressed: () async {
-                                if (!isAddedWatchlist) {
-                                  // await Provider.of<MovieDetailNotifier>(
-                                  //         context,
-                                  //         listen: false)
-                                  //     .addWatchlist(movie);
-                                } else {
-                                  // await Provider.of<MovieDetailNotifier>(
-                                  //         context,
-                                  //         listen: false)
-                                  //     .removeFromWatchlist(movie);
-                                }
-
-                                final message =
-                                    Provider.of<MovieDetailNotifier>(context,
-                                            listen: false)
-                                        .watchlistMessage;
-
-                                if (message ==
-                                        MovieDetailNotifier
-                                            .watchlistAddSuccessMessage ||
-                                    message ==
-                                        MovieDetailNotifier
-                                            .watchlistRemoveSuccessMessage) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(message)));
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          content: Text(message),
-                                        );
-                                      });
-                                }
-                              },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  isAddedWatchlist
-                                      ? Icon(Icons.check)
-                                      : Icon(Icons.add),
-                                  Text('Watchlist'),
-                                ],
-                              ),
-                            ),
+                            WatchlistButton(contentData),
                             Text(
                               _showGenres(contentData.genres),
                             ),
@@ -253,7 +207,7 @@ class DetailContent extends StatelessWidget {
                       borderRadius: BorderRadius.all(
                         Radius.circular(8),
                       ),
-                      child: DitontonImage(idPosterDataType.poster ?? ""),
+                      child: DitontonImage(idPosterDataType.poster),
                     ),
                   ),
                 );

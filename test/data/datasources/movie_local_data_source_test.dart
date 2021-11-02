@@ -7,13 +7,18 @@ import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/test_helper.mocks.dart';
 
 void main() {
-  late MovieLocalDataSourceImpl dataSource;
+  late WatchlistLocalDataSourceImpl dataSource;
   late MockDatabaseHelper mockDatabaseHelper;
 
   setUp(() {
     mockDatabaseHelper = MockDatabaseHelper();
-    dataSource = MovieLocalDataSourceImpl(databaseHelper: mockDatabaseHelper);
+    dataSource =
+        WatchlistLocalDataSourceImpl(databaseHelper: mockDatabaseHelper);
   });
+
+  final data = testMovieTable;
+  final id = data.id;
+  final dataType = data.dataType;
 
   group('save watchlist', () {
     test('should return success message when insert to database is success',
@@ -43,10 +48,10 @@ void main() {
     test('should return success message when remove from database is success',
         () async {
       // arrange
-      when(mockDatabaseHelper.removeWatchlist(testMovieTable))
+      when(mockDatabaseHelper.removeWatchlist(id, dataType))
           .thenAnswer((_) async => 1);
       // act
-      final result = await dataSource.removeWatchlist(testMovieTable);
+      final result = await dataSource.removeWatchlist(id, dataType);
       // assert
       expect(result, 'Removed from Watchlist');
     });
@@ -54,33 +59,32 @@ void main() {
     test('should throw DatabaseException when remove from database is failed',
         () async {
       // arrange
-      when(mockDatabaseHelper.removeWatchlist(testMovieTable))
+      when(mockDatabaseHelper.removeWatchlist(id, dataType))
           .thenThrow(Exception());
       // act
-      final call = dataSource.removeWatchlist(testMovieTable);
+      final call = dataSource.removeWatchlist(id, dataType);
       // assert
       expect(() => call, throwsA(isA<DatabaseException>()));
     });
   });
 
   group('Get Movie Detail By Id', () {
-    final tId = 1;
-
     test('should return Movie Detail Table when data is found', () async {
       // arrange
-      when(mockDatabaseHelper.getMovieById(tId))
+      when(mockDatabaseHelper.getMovieById(id, dataType))
           .thenAnswer((_) async => testMovieMap);
       // act
-      final result = await dataSource.getMovieById(tId);
+      final result = await dataSource.getMovieById(id, dataType);
       // assert
       expect(result, testMovieTable);
     });
 
     test('should return null when data is not found', () async {
       // arrange
-      when(mockDatabaseHelper.getMovieById(tId)).thenAnswer((_) async => null);
+      when(mockDatabaseHelper.getMovieById(id, dataType))
+          .thenAnswer((_) async => null);
       // act
-      final result = await dataSource.getMovieById(tId);
+      final result = await dataSource.getMovieById(id, dataType);
       // assert
       expect(result, null);
     });

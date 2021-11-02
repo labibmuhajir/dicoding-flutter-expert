@@ -1,5 +1,6 @@
 import 'package:ditonton/data/models/tv_series_model.dart';
 import 'package:ditonton/domain/entities/movie.dart';
+import 'package:ditonton/domain/entities/movie_detail.dart';
 import 'package:equatable/equatable.dart';
 
 enum DataType { Movie, TvSeries }
@@ -20,6 +21,11 @@ class IdPosterTitleOverview extends Equatable {
       movie.title ?? "No Title",
       movie.overview ?? "No Overview",
       dataType: DataType.Movie);
+
+  factory IdPosterTitleOverview.fromMovieDetail(MovieDetail movieDetail) =>
+      IdPosterTitleOverview(movieDetail.id, movieDetail.posterPath,
+          movieDetail.title, movieDetail.overview,
+          dataType: DataType.Movie);
 
   factory IdPosterTitleOverview.fromTvSeries(TvSeriesModel tvSeries) =>
       IdPosterTitleOverview(tvSeries.id, tvSeries.posterPath ?? "",
