@@ -24,6 +24,8 @@ import 'package:ditonton/domain/usecases/remove_watchlist.dart';
 import 'package:ditonton/domain/usecases/save_watchlist.dart';
 import 'package:ditonton/domain/usecases/search_movies.dart';
 import 'package:ditonton/domain/usecases/search_tv_series.dart';
+import 'package:ditonton/presentation/bloc/movie_search/movie_search_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv_searies_search/tv_series_search_bloc.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_search_notifier.dart';
@@ -82,12 +84,13 @@ void init() {
       .registerFactory(() => TvSeriesSearchNotifier(searchTvSeries: locator()));
   locator.registerFactory(() => TvDetailNotifier(
       getTvSeriesDetail: locator(), getTvSeriesRecommendations: locator()));
-  //todo
-  locator.registerLazySingleton(() => WatchlistNotifier(
+  locator.registerFactory(() => WatchlistNotifier(
       getWatchlist: locator(),
       getWatchListStatus: locator(),
       saveWatchlist: locator(),
       removeWatchlist: locator()));
+  locator.registerFactory(() => MovieSearchBloc(locator()));
+  locator.registerFactory(() => TvSeriesSearchBloc(locator()));
 
   // use case
   locator.registerLazySingleton(() => GetNowPlayingMovies(locator()));
