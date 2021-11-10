@@ -37,7 +37,7 @@ void main() {
   final tMovieList = <Movie>[tMovieModel];
   final tQuery = 'spiderman';
 
-  test('inital state should be empty', () {
+  test('inital state should be initial', () {
     expect(movieSearchBloc.state, MovieSearchInitial());
   });
 

@@ -10,8 +10,8 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
 import '../../dummy_data/dummy_objects.dart';
+import '../pages/movie_detail_page_test.mocks.dart';
 import '../widgets.dart/watchlist_button_test.mocks.dart';
-import 'detail_content_test.mocks.dart';
 
 void main() {
   late MovieDetailNotifier movieDetailNotifier;
