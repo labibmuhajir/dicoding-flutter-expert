@@ -4,12 +4,14 @@ import 'package:ditonton/domain/entities/content_data.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/id_and_data_type.dart';
 import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
+import 'package:ditonton/presentation/bloc/tv_detail/tv_detail_bloc.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_detail_notifier.dart';
 import 'package:ditonton/presentation/widgets/ditonton_image.dart';
 import 'package:ditonton/presentation/widgets/watchlist_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -177,22 +179,33 @@ class DetailContent extends StatelessWidget {
   }
 
   Widget _buildTvDetail() {
-    return Consumer<TvDetailNotifier>(
-      builder: (context, data, child) {
-        if (data.recommendationState == RequestState.Loading) {
+    return BlocConsumer<TvDetailBloc, TvDetailState>(
+      listener: (context, state) {
+        if (state is TvDetailError) {
+          showDialog(context: context, builder: (context) => AlertDialog(
+            content: Text(state.message),
+            actions: [
+              ElevatedButton(onPressed: () {
+                state.retry();
+              }, child: Text('Retry'))
+            ],
+          ));
+        }
+      },
+      builder: (context, state) {
+        if (state is TvDetailLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (data.recommendationState == RequestState.Error) {
-          return Text(data.message);
-        } else if (data.recommendationState == RequestState.Loaded) {
+        } else if (state is TvDetailSuccess) {
           return Container(
-            height: 150,
+            height: 170,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                final idPosterDataType = data.recommendations[index];
-                return Padding(
+                final idPosterDataType = state.recommendations[index];
+                return Container(
+                  width: 120,
                   padding: const EdgeInsets.all(4.0),
                   child: InkWell(
                     onTap: () {
@@ -212,7 +225,7 @@ class DetailContent extends StatelessWidget {
                   ),
                 );
               },
-              itemCount: data.recommendations.length,
+              itemCount: state.recommendations.length,
             ),
           );
         } else {
