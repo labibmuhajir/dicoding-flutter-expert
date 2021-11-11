@@ -1,9 +1,8 @@
-import 'package:ditonton/domain/entities/content_data.dart';
+import 'package:ditonton/common/extension.dart';
 import 'package:ditonton/domain/entities/id_and_data_type.dart';
 import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
+import 'package:ditonton/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv_detail/tv_detail_bloc.dart';
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/provider/watchlist_notifier.dart';
 import 'package:ditonton/presentation/widgets/detail_content.dart';
 import 'package:flutter/material.dart';
@@ -26,12 +25,13 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   void initState() {
     super.initState();
     if (widget.idAndDataType.dataType == DataType.Movie) {
-      Future.microtask(() {
-        Provider.of<MovieDetailNotifier>(context, listen: false)
-            .fetchMovieDetail(widget.idAndDataType.id);
-      });
+      context
+          .read<MovieDetailBloc>()
+          .add(OnMovieDetailDataRequested(widget.idAndDataType.id));
     } else if (widget.idAndDataType.dataType == DataType.TvSeries) {
-      context.read<TvDetailBloc>().add(OnTvDetailDataRequested(widget.idAndDataType.id));
+      context
+          .read<TvDetailBloc>()
+          .add(OnTvDetailDataRequested(widget.idAndDataType.id));
     }
 
     Provider.of<WatchlistNotifier>(context, listen: false)
@@ -48,21 +48,24 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   }
 
   Widget _buildMovieDetail() {
-    return Consumer<MovieDetailNotifier>(
-      builder: (context, provider, child) {
-        if (provider.movieState == RequestState.Loading) {
+    return BlocConsumer<MovieDetailBloc, MovieDetailState>(
+      listener: (context, state) {
+        if (state is MovieDetailError) {
+          context.dialog(state.message, state.retry);
+        }
+      },
+      builder: (context, state) {
+        if (state is MovieDetailLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (provider.movieState == RequestState.Loaded) {
-          final movie = provider.movie;
+        } else if (state is MovieDetailSuccess) {
+          final movie = state.contentData;
           return SafeArea(
-            child: DetailContent(
-              ContentData.fromMovie(movie),
-            ),
+            child: DetailContent(movie),
           );
         } else {
-          return Text(provider.message);
+          return Container();
         }
       },
     );
@@ -72,14 +75,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     return BlocConsumer<TvDetailBloc, TvDetailState>(
       listener: (context, state) {
         if (state is TvDetailError) {
-          showDialog(context: context, builder: (context) => AlertDialog(
-            content: Text(state.message),
-            actions: [
-              ElevatedButton(onPressed: () {
-                state.retry();
-              }, child: Text('Retry'))
-            ],
-          ));
+          context.dialog(state.message, state.retry);
         }
       },
       builder: (context, state) {
