@@ -1,19 +1,17 @@
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/common/extension.dart';
 import 'package:ditonton/domain/entities/content_data.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/id_and_data_type.dart';
 import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
+import 'package:ditonton/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv_detail/tv_detail_bloc.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_detail_notifier.dart';
 import 'package:ditonton/presentation/widgets/ditonton_image.dart';
 import 'package:ditonton/presentation/widgets/watchlist_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:provider/provider.dart';
 
 class DetailContent extends StatelessWidget {
   final ContentData contentData;
@@ -134,21 +132,24 @@ class DetailContent extends StatelessWidget {
   }
 
   Widget _buildMovie() {
-    return Consumer<MovieDetailNotifier>(
-      builder: (context, data, child) {
-        if (data.recommendationState == RequestState.Loading) {
+    return BlocConsumer<MovieDetailBloc, MovieDetailState>(
+      listener: (context, state) {
+        if (state is MovieDetailError) {
+          context.dialog(state.message, state.retry);
+        }
+      },
+      builder: (context, state) {
+        if (state is MovieDetailLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (data.recommendationState == RequestState.Error) {
-          return Text(data.message);
-        } else if (data.recommendationState == RequestState.Loaded) {
+        } else if (state is MovieDetailSuccess) {
           return Container(
             height: 150,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                final movies = data.movieRecommendations[index];
+                final movies = state.recommendations[index];
                 return Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: InkWell(
@@ -156,19 +157,19 @@ class DetailContent extends StatelessWidget {
                       Navigator.pushReplacementNamed(
                         context,
                         MovieDetailPage.ROUTE_NAME,
-                        arguments: IdAndDataType.fromMovie(movies),
+                        arguments: IdAndDataType.fromIdPosterDataType(movies),
                       );
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(
                         Radius.circular(8),
                       ),
-                      child: DitontonImage(movies.posterPath ?? ""),
+                      child: DitontonImage(movies.poster),
                     ),
                   ),
                 );
               },
-              itemCount: data.movieRecommendations.length,
+              itemCount: state.recommendations.length,
             ),
           );
         } else {
@@ -182,14 +183,7 @@ class DetailContent extends StatelessWidget {
     return BlocConsumer<TvDetailBloc, TvDetailState>(
       listener: (context, state) {
         if (state is TvDetailError) {
-          showDialog(context: context, builder: (context) => AlertDialog(
-            content: Text(state.message),
-            actions: [
-              ElevatedButton(onPressed: () {
-                state.retry();
-              }, child: Text('Retry'))
-            ],
-          ));
+          context.dialog(state.message, state.retry);
         }
       },
       builder: (context, state) {

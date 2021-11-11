@@ -1,5 +1,6 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/id_and_data_type.dart';
+import 'package:ditonton/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/movie_search/movie_search_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv_detail/tv_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv_searies_search/tv_series_search_bloc.dart';
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.locator<WatchlistBloc>()),
         BlocProvider(create: (_) => di.locator<WatchlistStatusBloc>()),
         BlocProvider(create: (_) => di.locator<TvDetailBloc>()),
+        BlocProvider(create: (_) => di.locator<MovieDetailBloc>()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
