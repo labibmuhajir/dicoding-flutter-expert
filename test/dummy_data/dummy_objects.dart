@@ -152,6 +152,7 @@ final tTvRecommendation = TvSeriesModel(
         "The misadventures of two wheeler dealer brothers Del Boy and Rodney Trotter of “Trotters Independent Traders PLC” who scrape their living by selling dodgy goods believing that next year they will be millionaires.",
     popularity: 13.616,
     voteAverage: 7.9,
-    voteCount: 179);
+    voteCount: 179,
+    posterPath: 'abc');
 
 final tTvRecommendationList = [tTvRecommendation];
