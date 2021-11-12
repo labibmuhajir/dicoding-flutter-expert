@@ -40,7 +40,7 @@ void main() {
         verify(getTopRatedTvSeries.execute());
       });
 
-  blocTest('Should emit [Loading, Error] when data is gotten succesful',
+  blocTest('Should emit [Loading, Error] when server failure',
       build: () {
         when(getTopRatedTvSeries.execute())
             .thenAnswer((realInvocation) async => Left(ServerFailure()));
