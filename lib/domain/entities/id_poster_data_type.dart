@@ -17,6 +17,11 @@ class IdPosterDataType extends Equatable {
       IdPosterDataType(
           tvSeries.id, tvSeries.posterPath ?? "", DataType.TvSeries);
 
+  factory IdPosterDataType.fromIdPosterTitleOverview(
+          IdPosterTitleOverview idPosterTitleOverview) =>
+      IdPosterDataType(idPosterTitleOverview.id, idPosterTitleOverview.poster,
+          idPosterTitleOverview.dataType);
+
   @override
   List<Object?> get props => [id, poster];
 }

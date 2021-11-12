@@ -2,7 +2,7 @@ part of 'on_the_air_tv_series_bloc.dart';
 
 abstract class OnTheAirTvSeriesState extends Equatable {
   const OnTheAirTvSeriesState();
-  
+
   @override
   List<Object> get props => [];
 }
@@ -12,7 +12,7 @@ class OnTheAirTvSeriesInitial extends OnTheAirTvSeriesState {}
 class OnTheAirTvSeriesLoading extends OnTheAirTvSeriesState {}
 
 class OnTheAirTvSeriesSuccess extends OnTheAirTvSeriesState {
-  final List<IdPosterTitleOverview> tvSeries;
+  final List<IdPosterDataType> tvSeries;
 
   OnTheAirTvSeriesSuccess(this.tvSeries);
 

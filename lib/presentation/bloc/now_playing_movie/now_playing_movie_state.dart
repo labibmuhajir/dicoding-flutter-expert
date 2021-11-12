@@ -12,7 +12,7 @@ class NowPlayingMovieInitial extends NowPlayingMovieState {}
 class NowPlayingMovieLoading extends NowPlayingMovieState {}
 
 class NowPlayingMovieSuccess extends NowPlayingMovieState {
-  final List<IdPosterTitleOverview> movies;
+  final List<IdPosterDataType> movies;
 
   NowPlayingMovieSuccess(this.movies);
 

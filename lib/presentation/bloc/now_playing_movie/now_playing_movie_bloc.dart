@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:bloc/bloc.dart';
-import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
+import 'package:ditonton/domain/entities/id_poster_data_type.dart';
 import 'package:ditonton/domain/usecases/get_now_playing_movies.dart';
 import 'package:equatable/equatable.dart';
 
@@ -32,8 +32,7 @@ class NowPlayingMovieBloc
 
       emit(state);
     }, (data) {
-      final result =
-          data.map((e) => IdPosterTitleOverview.fromMovie(e)).toList();
+      final result = data.map((e) => IdPosterDataType.fromMovie(e)).toList();
       final state = NowPlayingMovieSuccess(result);
 
       emit(state);

@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/common/failure.dart';
-import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
+import 'package:ditonton/domain/entities/id_poster_data_type.dart';
 import 'package:ditonton/domain/usecases/get_now_playing_movies.dart';
 import 'package:ditonton/presentation/bloc/now_playing_movie/now_playing_movie_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,7 +22,7 @@ void main() {
   final tMovieModel = testMovie;
   final tMovieList = [tMovieModel];
   final expected =
-      tMovieList.map((e) => IdPosterTitleOverview.fromMovie(e)).toList();
+      tMovieList.map((e) => IdPosterDataType.fromMovie(e)).toList();
 
   test('inital state should be initial', () {
     expect(bloc.state, NowPlayingMovieInitial());
