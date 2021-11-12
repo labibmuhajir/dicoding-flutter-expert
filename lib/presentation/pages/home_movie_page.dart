@@ -4,15 +4,14 @@ import 'package:ditonton/presentation/pages/popular_movies_page.dart';
 import 'package:ditonton/presentation/pages/popular_tv_series_page.dart';
 import 'package:ditonton/presentation/pages/search_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
+import 'package:ditonton/presentation/pages/top_rated_tv_series_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_page.dart';
 import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/provider/tv_series_list_notifier.dart';
 import 'package:ditonton/presentation/widgets/movie_list.dart';
 import 'package:ditonton/presentation/widgets/row_loading.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class HomeMoviePage extends StatefulWidget {
@@ -226,7 +225,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
           _buildSubHeading(
             title: 'Top Rated',
             onTap: () =>
-                Navigator.pushNamed(context, TopRatedMoviesPage.ROUTE_NAME),
+                Navigator.pushNamed(context, TopRatedTvSeriesPage.ROUTE_NAME),
           ),
           Consumer<TvSeriesListNotifier>(builder: (context, data, child) {
             final state = data.topRatedState;

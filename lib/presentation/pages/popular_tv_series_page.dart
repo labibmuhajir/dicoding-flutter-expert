@@ -1,4 +1,5 @@
 import 'package:ditonton/presentation/bloc/popular_tv_series/popular_tv_series_bloc.dart';
+import 'package:ditonton/presentation/widgets/ditonton_error_widget.dart';
 import 'package:ditonton/presentation/widgets/id_poster_title_overview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,15 +32,7 @@ class PopularTvSeriesPage extends StatelessWidget {
                       itemCount: state.tvSeries.length,
                     );
                   } else if (state is PopularTvSeriesError) {
-                      return Center(
-                        key: Key('error_message'),
-                        child: Column(children: [
-                          Text(state.message),
-                          ElevatedButton(onPressed: () {
-                            state.retry();
-                          }, child: Text('Retry'))
-                        ],),
-                      );
+                      return DitontonErrorWidget(state.message, retry: state.retry,);
                   } else {
                     return Container();
                   }

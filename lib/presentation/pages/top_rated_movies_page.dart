@@ -1,5 +1,6 @@
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/provider/top_rated_movies_notifier.dart';
+import 'package:ditonton/presentation/widgets/ditonton_error_widget.dart';
 import 'package:ditonton/presentation/widgets/id_poster_title_overview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,9 +44,8 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
                 itemCount: data.movies.length,
               );
             } else {
-              return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
+              return DitontonErrorWidget(
+                data.message
               );
             }
           },

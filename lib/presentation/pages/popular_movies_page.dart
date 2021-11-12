@@ -1,4 +1,5 @@
 import 'package:ditonton/presentation/bloc/popular_movie/popular_movie_bloc.dart';
+import 'package:ditonton/presentation/widgets/ditonton_error_widget.dart';
 import 'package:ditonton/presentation/widgets/id_poster_title_overview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,10 +33,7 @@ class PopularMoviesPage extends StatelessWidget {
                 itemCount: state.movies.length,
               );
             } else if (state is PopularMovieError) {
-              return Center(
-                key: Key('error_message'),
-                child: Text(state.message),
-              );
+              return DitontonErrorWidget(state.message, retry: state.retry,);
             } else {
               return Container();
             }
