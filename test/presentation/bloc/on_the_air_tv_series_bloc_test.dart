@@ -5,11 +5,13 @@ import 'package:ditonton/domain/entities/id_poster_data_type.dart';
 import 'package:ditonton/domain/usecases/get_on_the_air_tv_series.dart';
 import 'package:ditonton/presentation/bloc/on_the_air_tv_series/on_the_air_tv_series_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import '../provider/tv_series_list_notifier_test.mocks.dart';
+import 'on_the_air_tv_series_bloc_test.mocks.dart';
 
+@GenerateMocks([GetOnTheAirTvSeries])
 void main() {
   late GetOnTheAirTvSeries getOnTheAirTvSeries;
   late OnTheAirTvSeriesBloc bloc;

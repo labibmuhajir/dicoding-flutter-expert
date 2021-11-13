@@ -4,11 +4,13 @@ import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
 import 'package:ditonton/domain/usecases/get_watchlist_movies.dart';
 import 'package:ditonton/presentation/bloc/watchlist/watchlist_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import '../provider/watchlist_movie_notifier_test.mocks.dart';
+import 'watchlist_bloc_test.mocks.dart';
 
+@GenerateMocks([GetWatchlist])
 void main() {
   late GetWatchlist getWatchlist;
   late WatchlistBloc bloc;

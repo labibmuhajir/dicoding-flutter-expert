@@ -5,11 +5,13 @@ import 'package:ditonton/domain/entities/id_poster_data_type.dart';
 import 'package:ditonton/domain/usecases/get_now_playing_movies.dart';
 import 'package:ditonton/presentation/bloc/now_playing_movie/now_playing_movie_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import '../provider/movie_list_notifier_test.mocks.dart';
+import 'now_playing_movie_bloc_test.mocks.dart';
 
+@GenerateMocks([GetNowPlayingMovies])
 void main() {
   late GetNowPlayingMovies getNowPlayingMovies;
   late NowPlayingMovieBloc bloc;

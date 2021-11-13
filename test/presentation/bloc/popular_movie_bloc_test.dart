@@ -6,11 +6,13 @@ import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/usecases/get_popular_movies.dart';
 import 'package:ditonton/presentation/bloc/popular_movie/popular_movie_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import '../provider/popular_movies_notifier_test.mocks.dart';
+import 'popular_movie_bloc_test.mocks.dart';
 
+@GenerateMocks([GetPopularMovies])
 void main() {
   late GetPopularMovies getPopularMovies;
   late PopularMovieBloc bloc;

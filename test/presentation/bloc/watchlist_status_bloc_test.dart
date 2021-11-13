@@ -10,11 +10,14 @@ import 'package:ditonton/domain/usecases/save_watchlist.dart';
 import 'package:ditonton/presentation/bloc/watchlist/watchlist_bloc.dart';
 import 'package:ditonton/presentation/bloc/watchlist_status/watchlist_status_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import '../provider/watchlist_movie_notifier_test.mocks.dart';
+import 'watchlist_bloc_test.mocks.dart';
+import 'watchlist_status_bloc_test.mocks.dart';
 
+@GenerateMocks([GetWatchListStatus, RemoveWatchlist, SaveWatchlist])
 void main() {
   late WatchlistBloc watchlistBloc;
   late GetWatchlist getWatchlist;

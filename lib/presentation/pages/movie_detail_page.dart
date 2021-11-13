@@ -3,7 +3,6 @@ import 'package:ditonton/domain/entities/id_and_data_type.dart';
 import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
 import 'package:ditonton/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/tv_detail/tv_detail_bloc.dart';
-import 'package:ditonton/presentation/provider/watchlist_notifier.dart';
 import 'package:ditonton/presentation/widgets/detail_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,9 +32,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           .read<TvDetailBloc>()
           .add(OnTvDetailDataRequested(widget.idAndDataType.id));
     }
-
-    Provider.of<WatchlistNotifier>(context, listen: false)
-        .loadWatchlistStatus(widget.idAndDataType);
   }
 
   @override

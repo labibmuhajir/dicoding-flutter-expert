@@ -5,11 +5,13 @@ import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
 import 'package:ditonton/domain/usecases/get_top_rated_movies.dart';
 import 'package:ditonton/presentation/bloc/top_rated_movie/top_rated_movie_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import '../provider/top_rated_movies_notifier_test.mocks.dart';
+import 'top_rated_movie_bloc_test.mocks.dart';
 
+@GenerateMocks([GetTopRatedMovies])
 void main() {
   late GetTopRatedMovies getTopRatedMovies;
   late TopRatedMovieBloc bloc;
@@ -49,7 +51,10 @@ void main() {
       },
       act: (TopRatedMovieBloc bloc) => bloc.add(OnTopRatedMovieDataRequested()),
       wait: const Duration(milliseconds: 500),
-      expect: () => [TopRatedMovieLoading(), TopRatedMovieError('Server Failure', retry: () {})],
+      expect: () => [
+            TopRatedMovieLoading(),
+            TopRatedMovieError('Server Failure', retry: () {})
+          ],
       verify: (TopRatedMovieBloc bloc) {
         verify(getTopRatedMovies.execute());
       });
