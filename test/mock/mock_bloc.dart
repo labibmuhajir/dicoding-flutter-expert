@@ -1,7 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:ditonton/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/popular_movie/popular_movie_bloc.dart';
+import 'package:ditonton/presentation/bloc/popular_tv_series/popular_tv_series_bloc.dart';
 import 'package:ditonton/presentation/bloc/top_rated_movie/top_rated_movie_bloc.dart';
+import 'package:ditonton/presentation/bloc/top_rated_tv_series/top_rated_tv_series_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv_detail/tv_detail_bloc.dart';
 import 'package:ditonton/presentation/bloc/watchlist/watchlist_bloc.dart';
 import 'package:ditonton/presentation/bloc/watchlist_status/watchlist_status_bloc.dart';
 import 'package:mocktail/mocktail.dart';
@@ -43,3 +46,26 @@ class MockWatchlistBloc extends MockBloc<WatchlistEvent, WatchlistState>
 class WatchlistStateFake extends Fake implements WatchlistState {}
 
 class WatchlistEventFake extends Fake implements WatchlistEvent {}
+
+class MockPopularTvSeriesBloc
+    extends MockBloc<PopularTvSeriesEvent, PopularTvSeriesState>
+    implements PopularTvSeriesBloc {}
+
+class PopularTvSeriesStateFake extends Fake implements PopularTvSeriesState {}
+
+class PopularTvSeriesEventFake extends Fake implements PopularTvSeriesEvent {}
+
+class MockTopRatedTvSeriesBloc
+    extends MockBloc<TopRatedTvSeriesEvent, TopRatedTvSeriesState>
+    implements TopRatedTvSeriesBloc {}
+
+class TopRatedTvSeriesStateFake extends Fake implements TopRatedTvSeriesState {}
+
+class TopRatedTvSeriesEventFake extends Fake implements TopRatedTvSeriesEvent {}
+
+class MockTvDetailBloc extends MockBloc<TvDetailEvent, TvDetailState>
+    implements TvDetailBloc {}
+
+class TvDetailStateFake extends Fake implements TvDetailState {}
+
+class TvDetailEventFake extends Fake implements TvDetailEvent {}
