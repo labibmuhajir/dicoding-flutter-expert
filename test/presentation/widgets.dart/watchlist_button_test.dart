@@ -1,26 +1,30 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:ditonton/domain/entities/content_data.dart';
-import 'package:ditonton/presentation/provider/watchlist_notifier.dart';
+import 'package:ditonton/presentation/bloc/watchlist_status/watchlist_status_bloc.dart';
 import 'package:ditonton/presentation/widgets/watchlist_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import 'watchlist_button_test.mocks.dart';
+import '../../mock/mock_bloc.dart';
 
-@GenerateMocks([WatchlistNotifier])
 void main() {
-  late WatchlistNotifier watchlistNotifier;
+  late WatchlistStatusBloc bloc;
 
   setUp(() {
-    watchlistNotifier = MockWatchlistNotifier();
+    bloc = MockWatchListStatusBloc();
+  });
+
+  setUpAll(() {
+    registerFallbackValue(WatchListStatusStateFake());
+    registerFallbackValue(WatchListStatusEventFake());
   });
 
   Widget _makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider.value(
-      value: watchlistNotifier,
+    return BlocProvider.value(
+      value: bloc,
       child: MaterialApp(
         home: body,
       ),
@@ -35,11 +39,18 @@ void main() {
       (WidgetTester tester) async {
     final isAddedToWatchList = false;
 
-    when(watchlistNotifier.isAddedToWatchlist).thenReturn(isAddedToWatchList);
+    whenListen(
+        bloc,
+        Stream.fromIterable([
+          WatchlistStatusLoading(),
+          WatchlistStatusLoaded(isAddedToWatchList)
+        ]),
+        initialState: WatchlistStatusInitial());
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
 
     await tester.pumpWidget(_makeTestableWidget(WatchlistButton(contentData)));
+    await tester.pump(Duration.zero);
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -49,11 +60,18 @@ void main() {
       (WidgetTester tester) async {
     final isAddedToWatchList = true;
 
-    when(watchlistNotifier.isAddedToWatchlist).thenReturn(isAddedToWatchList);
+    whenListen(
+        bloc,
+        Stream.fromIterable([
+          WatchlistStatusLoading(),
+          WatchlistStatusLoaded(isAddedToWatchList)
+        ]),
+        initialState: WatchlistStatusInitial());
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
 
     await tester.pumpWidget(_makeTestableWidget(WatchlistButton(contentData)));
+    await tester.pump(Duration.zero);
 
     expect(watchlistButtonIcon, findsOneWidget);
   });

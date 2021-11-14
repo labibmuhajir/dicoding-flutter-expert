@@ -1,56 +1,45 @@
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/provider/popular_tv_series_notifier.dart';
+import 'package:ditonton/presentation/bloc/popular_tv_series/popular_tv_series_bloc.dart';
+import 'package:ditonton/presentation/widgets/ditonton_error_widget.dart';
 import 'package:ditonton/presentation/widgets/id_poster_title_overview_card.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PopularTvSeriesPage extends StatefulWidget {
+class PopularTvSeriesPage extends StatelessWidget {
   static const ROUTE_NAME = '/popular-tv-series';
 
   @override
-  _PopularTvSeriesPageState createState() => _PopularTvSeriesPageState();
-}
-
-class _PopularTvSeriesPageState extends State<PopularTvSeriesPage> {
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() =>
-        Provider.of<PopularTvSeriesNotifier>(context, listen: false)
-            .fetchPopularTvSeries());
-  }
-
-  @override
   Widget build(BuildContext context) {
+    context.read<PopularTvSeriesBloc>().add(OnPopulartTvSeriesDataRequested());
+    
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Popular Tv Series'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Consumer<PopularTvSeriesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.Loading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (data.state == RequestState.Loaded) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final movie = data.popularTvSeries[index];
-                  return IdPosterTitleOverviewCard(movie);
+            appBar: AppBar(
+              title: Text('Popular Tv Series'),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: BlocBuilder<PopularTvSeriesBloc, PopularTvSeriesState>(
+                builder: (context, state) {
+                  if (state is PopularTvSeriesLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is PopularTvSeriesSuccess) {
+                    return ListView.builder(
+                      itemBuilder: (context, index) {
+                        final movie = state.tvSeries[index];
+                        return IdPosterTitleOverviewCard(movie);
+                      },
+                      itemCount: state.tvSeries.length,
+                    );
+                  } else if (state is PopularTvSeriesError) {
+                      return DitontonErrorWidget(state.message, retry: state.retry,);
+                  } else {
+                    return Container();
+                  }
                 },
-                itemCount: data.popularTvSeries.length,
-              );
-            } else {
-              return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
-              );
-            }
-          },
-        ),
-      ),
-    );
+              ),
+            ),
+          );
   }
 }
+

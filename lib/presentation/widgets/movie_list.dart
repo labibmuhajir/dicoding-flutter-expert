@@ -1,6 +1,6 @@
 import 'package:ditonton/domain/entities/id_and_data_type.dart';
 import 'package:ditonton/domain/entities/id_poster_data_type.dart';
-import 'package:ditonton/domain/entities/movie.dart';
+import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/widgets/ditonton_image.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +10,11 @@ class MovieList extends StatelessWidget {
 
   MovieList(this.idAndPoster);
 
-  factory MovieList.fromMovies(List<Movie> movies) {
-    final idAndPoster =
-        movies.map((e) => IdPosterDataType.fromMovie(e)).toList();
+  factory MovieList.fromIdPosterTitleOverview(
+      List<IdPosterTitleOverview> movies) {
+    final idAndPoster = movies
+        .map((e) => IdPosterDataType.fromIdPosterTitleOverview(e))
+        .toList();
     return MovieList(idAndPoster);
   }
 

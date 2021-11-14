@@ -1,12 +1,11 @@
-import 'package:ditonton/domain/entities/content_data.dart';
+import 'package:ditonton/common/extension.dart';
 import 'package:ditonton/domain/entities/id_and_data_type.dart';
 import 'package:ditonton/domain/entities/id_poster_title_overview.dart';
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/provider/tv_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_notifier.dart';
+import 'package:ditonton/presentation/bloc/movie_detail/movie_detail_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv_detail/tv_detail_bloc.dart';
 import 'package:ditonton/presentation/widgets/detail_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class MovieDetailPage extends StatefulWidget {
@@ -25,19 +24,14 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   void initState() {
     super.initState();
     if (widget.idAndDataType.dataType == DataType.Movie) {
-      Future.microtask(() {
-        Provider.of<MovieDetailNotifier>(context, listen: false)
-            .fetchMovieDetail(widget.idAndDataType.id);
-      });
+      context
+          .read<MovieDetailBloc>()
+          .add(OnMovieDetailDataRequested(widget.idAndDataType.id));
     } else if (widget.idAndDataType.dataType == DataType.TvSeries) {
-      Future.microtask(() {
-        Provider.of<TvDetailNotifier>(context, listen: false)
-            .fetchTvDetail(widget.idAndDataType.id);
-      });
+      context
+          .read<TvDetailBloc>()
+          .add(OnTvDetailDataRequested(widget.idAndDataType.id));
     }
-
-    Provider.of<WatchlistNotifier>(context, listen: false)
-        .loadWatchlistStatus(widget.idAndDataType);
   }
 
   @override
@@ -50,42 +44,48 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   }
 
   Widget _buildMovieDetail() {
-    return Consumer<MovieDetailNotifier>(
-      builder: (context, provider, child) {
-        if (provider.movieState == RequestState.Loading) {
+    return BlocConsumer<MovieDetailBloc, MovieDetailState>(
+      listener: (context, state) {
+        if (state is MovieDetailError) {
+          context.dialog(state.message, state.retry);
+        }
+      },
+      builder: (context, state) {
+        if (state is MovieDetailLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (provider.movieState == RequestState.Loaded) {
-          final movie = provider.movie;
+        } else if (state is MovieDetailSuccess) {
+          final movie = state.contentData;
           return SafeArea(
-            child: DetailContent(
-              ContentData.fromMovie(movie),
-            ),
+            child: DetailContent(movie),
           );
         } else {
-          return Text(provider.message);
+          return Container();
         }
       },
     );
   }
 
   Widget _buildTvDetail() {
-    return Consumer<TvDetailNotifier>(
-      builder: (context, provider, child) {
-        if (provider.tvSeriesState == RequestState.Loading) {
+    return BlocConsumer<TvDetailBloc, TvDetailState>(
+      listener: (context, state) {
+        if (state is TvDetailError) {
+          context.dialog(state.message, state.retry);
+        }
+      },
+      builder: (context, state) {
+        if (state is TvDetailLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (provider.tvSeriesState == RequestState.Loaded) {
-          final movie = provider.tvSeries;
+        } else if (state is TvDetailSuccess) {
+          final tv = state.contentData;
           return SafeArea(
-            child: DetailContent(
-              movie,
-            ),
+            child: DetailContent(tv),
           );
         } else {
-          return Text(provider.message);
+          return Container();
         }
       },
     );

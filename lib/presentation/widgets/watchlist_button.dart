@@ -1,7 +1,8 @@
 import 'package:ditonton/domain/entities/content_data.dart';
 import 'package:ditonton/domain/entities/id_and_data_type.dart';
-import 'package:ditonton/presentation/provider/watchlist_notifier.dart';
+import 'package:ditonton/presentation/bloc/watchlist_status/watchlist_status_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class WatchlistButton extends StatelessWidget {
@@ -11,42 +12,47 @@ class WatchlistButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WatchlistNotifier>(
-        builder: (context, notifier, child) => ElevatedButton(
-              onPressed: () async {
-                if (!notifier.isAddedToWatchlist) {
-                  await notifier.addWatchlist(contentData);
-                } else {
-                  await notifier.removeFromWatchlist(
-                      IdAndDataType(contentData.id, contentData.dataType));
-                }
+    return BlocConsumer<WatchlistStatusBloc, WatchlistStatusState>(
+      listener: (context, state) {
+        if (state is WatchlistStatusSuccess) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.message)));
+        } else if (state is WatchlistStatusError) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                    content: Text(
+                  state.message,
+                ));
+              });
+        }
+      },
+      builder: (BuildContext context, state) {
+        final idAndDataType =
+            IdAndDataType(contentData.id, contentData.dataType);
+        context
+            .read<WatchlistStatusBloc>()
+            .add(OnWatchlistStatusChecked(idAndDataType));
 
-                final message = notifier.message;
-
-                if (message == WatchlistNotifier.watchlistAddSuccessMessage ||
-                    message ==
-                        WatchlistNotifier.watchlistRemoveSuccessMessage) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(message)));
-                } else {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          content: Text(message),
-                        );
-                      });
-                }
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  notifier.isAddedToWatchlist
-                      ? Icon(Icons.check)
-                      : Icon(Icons.add),
-                  Text('Watchlist'),
-                ],
-              ),
-            ));
+        return ElevatedButton(
+          onPressed: () async {
+            if (state is WatchlistStatusLoaded) {
+              context.read<WatchlistStatusBloc>().add(state.isAdded
+                  ? OnWatchlistRemoved(idAndDataType)
+                  : OnWatchlistAdded(contentData));
+            }
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (state is WatchlistStatusLoaded)
+                state.isAdded ? Icon(Icons.check) : Icon(Icons.add),
+              Text('Watchlist'),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
