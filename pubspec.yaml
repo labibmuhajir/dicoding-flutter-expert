@@ -40,6 +40,7 @@ dependencies:
   path_provider: ^2.0.2
   flutter_bloc: ^7.3.2
   rxdart: ^0.27.2
+  http_certificate_pinning: 2.0.3
 
 dev_dependencies:
   mockito: ^5.0.8

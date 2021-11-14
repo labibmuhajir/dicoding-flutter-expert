@@ -62,7 +62,6 @@ void main() {
       expect: () => [
             WatchlistStatusLoading(),
             WatchlistStatusSuccess('Success Added title to watchlist'),
-            WatchlistStatusLoading(),
             WatchlistStatusLoaded(true)
           ],
       verify: (WatchlistStatusBloc bloc) {
@@ -86,7 +85,6 @@ void main() {
       expect: () => [
             WatchlistStatusLoading(),
             WatchlistStatusSuccess('Success Removed'),
-            WatchlistStatusLoading(),
             WatchlistStatusLoaded(false)
           ],
       verify: (WatchlistStatusBloc bloc) {

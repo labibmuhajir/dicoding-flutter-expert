@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 const API_KEY = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const String BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
+const String CERTIFICATE_SHA256 =
+    '54:9E:69:39:A3:01:44:A6:1B:1B:F5:5D:A5:B0:CD:E7:F8:1B:39:4D:8B:7D:B1:97:C0:B7:50:1E:FC:15:A2:85';
 
 // colors
 const Color kRichBlack = Color(0xFF000814);

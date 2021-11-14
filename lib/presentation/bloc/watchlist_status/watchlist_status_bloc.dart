@@ -37,7 +37,6 @@ class WatchlistStatusBloc
 
   Future<void> onWatchListStatusChecked(GetWatchListStatus getWatchListStatus,
       IdAndDataType idAndDataType) async {
-    emit(WatchlistStatusLoading());
     final isAdded = await getWatchListStatus.execute(
         idAndDataType.id, idAndDataType.dataType.index);
 
